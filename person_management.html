@@ -10,6 +10,7 @@
     <div class="container mt-5">
         <h1 class="mb-4">Gestión de Personas</h1>
         <button id="createPersonBtn" class="btn btn-primary mb-3">Crear Persona</button>
+        <!--button id="generatePdf" class="btn btn-info mb-3">Generar PDF</button-->
         <table class="table table-striped">
             <thead>
                 <tr>
@@ -69,7 +70,7 @@
 
             function loadPersons() {
                 $.ajax({
-                    url: 'http://localhost:5000/getpersona',
+                    url: 'http://34.216.184.121:5000/getpersona',
                     type: 'GET',
                     headers: {
                         'Authorization': token
@@ -110,7 +111,7 @@
             $(document).on('click', '.edit-person', function() {
                 const personId = $(this).data('id');
                 $.ajax({
-                    url: `http://localhost:5000/getpersona`,
+                    url: `http://34.216.184.121:5000/getpersona`,
                     type: 'GET',
                     headers: { 'Authorization': token },
                     dataType: "json",
@@ -142,7 +143,7 @@
                 }
                 if (personId){ datos['id'] = parseInt(personId);}
                 $.ajax({
-                    url: 'http://localhost:5000/getpersona',
+                    url: 'http://34.216.184.121:5000/getpersona',
                     type: method,
                     headers: {
                         'Authorization': token
@@ -163,7 +164,7 @@
                 if (confirm('¿Estás seguro de que quieres eliminar esta persona?')) {
                     const personId = $(this).data('id');
                     $.ajax({
-                        url: `http://localhost:5000/getpersona`,
+                        url: `http://34.216.184.121:5000/getpersona`,
                         type: 'DELETE',
                         headers: {
                             'Authorization': token
@@ -177,6 +178,34 @@
                         }
                     });
                 }
+            });
+
+            $(document).on('click', '#generatePdf', function() {
+                $.ajax({
+                    url: 'http://34.216.184.121:5000/generate_pdf',
+                    method: 'GET',
+                    xhrFields: {
+                        responseType: 'blob'
+                    },
+                    headers: {
+                        'Authorization': token,
+                        "Accept": "application/pdf",
+                        "Access-Control-Allow-Origin": "*"
+                    },
+                    success: function(response, status, xhr) {
+                        var blob = new Blob([response], { type: 'application/pdf' });
+                        var link = document.createElement('a');
+                        link.href = window.URL.createObjectURL(blob);
+                        link.download = "documento.pdf";
+                        link.click();
+
+
+                        $('#message').html('<div class="alert alert-success">PDF generado y descargado con éxito</div>');
+                    },
+                    error: function(xhr, status, error) {
+                        $('#message').html('<div class="alert alert-danger">Error al generar el PDF: ' + error + '</div>');
+                    }
+                });
             });
         });
     </script>
