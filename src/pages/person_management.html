@@ -11,7 +11,7 @@
     <div class="container mt-5">
         <h1 class="mb-4 primary">Gestión de Personas</h1>
         <button id="createPersonBtn" class="btn btn-primary mb-3">Crear Persona</button>
-        <!--button id="generatePdf" class="btn btn-info mb-3">Generar PDF</button-->
+        <button id="generatePdf" class="btn btn-info mb-3">Generar PDF</button>
         <table class="table table-light table-striped table-bordered">
             <thead>
                 <tr>
@@ -71,7 +71,7 @@
 
             function loadPersons() {
                 $.ajax({
-                    url: 'http://34.216.184.121:5000/getpersona',
+                    url: 'http://localhost:5000/getpersona',
                     type: 'GET',
                     headers: {
                         'Authorization': token
@@ -112,7 +112,7 @@
             $(document).on('click', '.edit-person', function() {
                 const personId = $(this).data('id');
                 $.ajax({
-                    url: `http://34.216.184.121:5000/getpersona`,
+                    url: `http://localhost:5000/getpersona`,
                     type: 'GET',
                     headers: { 'Authorization': token },
                     dataType: "json",
@@ -144,7 +144,7 @@
                 }
                 if (personId){ datos['id'] = parseInt(personId);}
                 $.ajax({
-                    url: 'http://34.216.184.121:5000/getpersona',
+                    url: 'http://localhost:5000/getpersona',
                     type: method,
                     headers: {
                         'Authorization': token
@@ -165,7 +165,7 @@
                 if (confirm('¿Estás seguro de que quieres eliminar esta persona?')) {
                     const personId = $(this).data('id');
                     $.ajax({
-                        url: `http://34.216.184.121:5000/getpersona`,
+                        url: `http://localhost:5000/getpersona`,
                         type: 'DELETE',
                         headers: {
                             'Authorization': token
@@ -183,7 +183,7 @@
 
             $(document).on('click', '#generatePdf', function() {
                 $.ajax({
-                    url: 'http://34.216.184.121:5000/generate_pdf',
+                    url: 'http://localhost:5000/generate_pdf',
                     method: 'GET',
                     xhrFields: {
                         responseType: 'blob'
